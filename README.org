@@ -9,7 +9,8 @@
   Hopefully some of the tidbits are interesting!
 
   Feel free to make pull requests to improve the notes / make
-  corrections. This is most welcome!
+  corrections. This is most welcome, as are issues for any unclear
+  notes.
 
   These notes were originally summarized by Calvin Beck, with special
   thanks to Perry Metzger and John Wiegely for the slack logs, and all
