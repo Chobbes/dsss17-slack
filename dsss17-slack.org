@@ -14,7 +14,7 @@
   - All of the DSSS17 participants for their great questions and answers
 
   If you wish to make contributions, changes, or corrections, please
-  feel free to make a pull request.
+  feel free to make a [[https://github.com/Chobbes/dsss17-slack][pull request]].
 
 ** Resources
 

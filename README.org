@@ -1,0 +1,16 @@
+* Introduction
+
+  ~dsss17-slack.org~ contains a summary of some of the questions and
+  answers that came up during DeepSpec Summer School 2017 in the #coq
+  channel on slack. The notes are up here:
+
+  [[https://www.typesofnote.com/dsss17-slack.html][Deepspec Summer School 2017 Slack Notes]]
+
+  Hopefully some of the tidbits are interesting!
+
+  Feel free to make pull requests to improve the notes / make
+  corrections. This is most welcome!
+
+  These notes were originally summarized by Calvin Beck, with special
+  thanks to Perry Metzger and John Wiegely for the slack logs, and all
+  of the DSSS17 participants for their questions and answers!
