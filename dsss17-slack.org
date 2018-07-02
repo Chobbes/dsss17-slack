@@ -1,0 +1,1152 @@
+#+SETUPFILE: theme-bigblow.setup
+
+* #coq
+
+** Introduction
+
+  This document is a summary of the #coq channel from the DeepSpec
+  Summer School in 2017, originally summarized by Calvin Beck.
+
+  Special thanks to:
+
+  - John Wiegely: setting up a ZNC bouncer to grab logs from IRC
+  - Perry Metzger: setting up the VPS for the bouncer
+  - All of the DSSS17 participants for their great questions and answers
+
+  If you wish to make contributions, changes, or corrections, please
+  feel free to make a pull request.
+
+** Resources
+
+*** General Coq                                                         :coq:
+
+   - https://coq.inria.fr/refman/
+     + Official Coq manual, this was recently converted into a much more readable format
+   - https://coq.inria.fr/cocorico/Home
+     + Coq wiki. Seems to have moved to Github: https://github.com/coq/coq/wiki
+   - http://iris-project.org/
+     + Higher-Order Concurrent Separation Logic Framework implemented
+       and verified in the proof assistant Coq.
+     + Somewhat similar to VST
+   - https://quanttype.net/posts/2016-04-19-finding-that-lemma.html
+     + How to search in Coq.
+   - https://coq.inria.fr/distrib/current/refman/language/gallina-extensions.html#section-mechanism
+     + Manual page about sections.
+
+*** Coq plugins                                                     :plugins:
+
+   - https://github.com/uwplse/CoqAST
+     + Toy Coq 8.5 plugin.
+   - https://github.com/lemonidas/invertn_tactic
+     + Ocaml tactic for inverting a hypothesis and creating at most
+       ~n~ new hypothesis.
+
+*** Ltac                                                               :ltac:
+
+   - https://coq.inria.fr/distrib/current/refman/proof-engine/ltac.html
+     + Chapter on Ltac in the reference manual.
+     + Lots of ways to combine tactics. ~;~, ~+~, ~||~
+   - https://github.com/ppedrot/ltac2
+     + Ltac2, a new tactic language
+
+*** ssreflect                                                     :ssreflect:
+
+   - https://math-comp.github.io/mcb/book.pdf
+     + ssreflect book.
+   - http://ilyasergey.net/pnp/
+     + another ssreflect book.
+
+*** Coinduction                                                 :coinduction:
+
+    - http://www.joachim-breitner.de/blog/726-Coinduction_in_Coq_and_Isabelle
+    - http://www.joachim-breitner.de/blog/727-How_is_coinduction_the_dual_of_induction_
+
+*** Misc
+
+   - http://www.cs.bham.ac.uk/~mhe/GeneralizedHedberg/html/GeneralizedHedberg.html
+     + Hedberg's theorem in Agda. Relevant to decidable propositions.
+
+** Coq Libraries
+
+   - https://madiot.fr/coq100/
+     + Common mathematical theorems implemented in Coq.
+   - https://gitlab.mpi-sws.org/robbertkrebbers/coq-stdpp 
+     + Larger standard library for Coq.
+   - https://github.com/coq-contribs/coq-contribs.git 
+     + User submitted coq libraries.
+     + Superseded by installing libraries with opam.
+   - https://github.com/uwplse/StructTact
+     + Utility and tactic library.
+   - https://github.com/wilcoxjay/tactics
+     + Small tactic library.
+
+** Papers
+   - https://pdfs.semanticscholar.org/0aba/4e4000988d8563c2e64b343f876efa77767b.PDF 
+     + Paper on Pollack-inconsistency. Related to the thought that you
+       should not be able to think that a theorem which is false has
+       been proved true. Relevant to parsing and printing in proof
+       assistants.
+     + Some slides: https://www.cs.ru.nl/~freek/talks/rap.pdf
+
+** Ltac Semantics, History, and Future
+
+*** Old Semantics of Ltac
+
+   - http://www.ii.uni.wroc.pl/~wjedynak/publications/master.pdf
+     + Study of the semantics of Ltac
+     + Out of date as 8.5 introduced a new tactics engine
+   - http://dl.acm.org/ft_gateway.cfm?id=2505890
+     + Another paper on the semantics of Ltac
+
+*** More Modern Ltac Information
+
+   - http://coqhott.gforge.inria.fr/blog/coq-tactic-engine/ 
+   - http://assert-false.net/arnaud/papers/An%20abstract%20type%20for%20constructing%20tactics%20in%20Coq.pdf
+
+*** Papers on the Inception of Ltac
+
+    - [[http://www.lirmm.fr/~delahaye/papers/ltac%2520(LPAR'00).pdf][http://www.lirmm.fr/~delahaye/papers/ltac%20(LPAR'00).pdf]]
+    - [[http://www.lirmm.fr/~delahaye/papers/ltac%2520(LFM'02).pdf][http://www.lirmm.fr/~delahaye/papers/ltac%20(LFM'02).pdf]]
+
+*** Possible Future
+
+    - https://www.xn--pdrot-bsa.fr/slides/coqcs-06-16.pdf
+    - https://www.xn--pdrot-bsa.fr/slides/deepspec-06-16.pdf
+
+** Proof General                                                     :pg:coq:
+
+   Proof general is an Emacs interface to a number of proof
+   assistants. In particular it works quite well with Coq!
+
+   https://proofgeneral.github.io/
+
+*** Coq has frozen in proof general                                    :bugs:
+
+    Steps to fix proof-general when it gets stuck:
+
+    - ~C-c C-c~: ~proof-interrupt-process~.
+    - ~C-c C-u~: ~proof-undo-last-successful-command~.
+    - ~C-c C-x~: ~proof-shell-exit~, follow this with ~C-c <C-return>~ to get back to the original point.
+    - Open a shell and kill ~coqtop~.
+
+*** Use company coq
+
+    Company-coq is an Emacs mode on top of proof general which
+    provides a lot of useful additions. It prettifies symbols (which
+    can be turned off), it provides a lot of completions which can be
+    very useful when discovering tactics, and it provides easy ways to
+    look up types and documentation.
+
+    https://github.com/cpitclaudel/company-coq
+
+*** MELPA?
+
+    Proof general is not on MELPA as of writing, but the plan is to
+    have a MELPA package once the new proof general is out of beta.
+
+*** coq-compile-before-require
+
+    http://proofgeneral.inf.ed.ac.uk/htmlshow.php?title=Proof+General+user+manual&file=releases%2FProofGeneral%2Fdoc%2FProofGeneral%2FProofGeneral_12.html
+
+    Proof general will automatically compile files when a ~Require~ is
+    executed if the ~coq-compile-before-require~ variable is set to
+    ~t~. This can be useful, and it should only recompile if necessary.
+
+    One potential issues is if you have different versions of a big
+    library like CompCert lying around, then it might end up compiling
+    when you don't expect it, and ~Require~ statements may take a long
+    time to evaluate.
+
+*** ProofGeneral saving contents of buffers                   :pg:
+
+    Useful keybindings in ProofGeneral: ~C-c C-a r~ and ~C-c C-a g~,
+    for persisting the contents of the goal and response buffer in
+    another, special buffer, which accumulate each such output.
+
+*** ProofGeneral look up information about identifier         :pg:
+
+    ~C-c C-i~ will run check on the identifier at point.
+
+*** Ltac Debugging in Proof General                       :ltac:debugging:pg:
+
+    There is no integration of the Ltac debugger in proof general, but
+    you can switch to the ~*coq*~ buffer to use the debugger
+    directly.
+
+** Managing Coq installations
+
+*** Switching between versions                                 :versions:coq:
+
+    You may find yourself wanting to switch between versions of Coq. There are a couple of options for this:
+
+    - opam switch
+    - the nix package manager
+    - GNU stow
+
+** VST                                                                  :vst:
+
+*** entailer and cancel                                         :tactics:vst:
+
+    VST has the tactics ~entailer~ and ~entailer!~, which are used to
+    solve separation logic goals of the form `_ |-- _`.
+
+    The difference between ~entailer~ and ~entailer!~ is that the
+    latter uses a heuristic, so it can solve the goal faster. Usually
+    you try ~entailer!~, and if it doesn't work you try ~entailer~.
+
+    If it does not work,see if you can rewrite the goal to get
+    something of the form ~A |-- A~. If your goal is exactly ~A |--
+    A~, then you can use the tactic ~cancel~, which is to ~entailer~
+    what ~reflexivity~ is to ~auto~.
+
+*** entailer vs forward                                         :tactics:vst:
+
+    If your goal has ~Entail~ or ~_ |-- _~, then you likely use ~entailer~, or ~entailer!~.
+
+    If your goal has ~semax~, then you do ~forward~.
+
+
+*** Strongest Post Condition Principle
+    VST is using the /strongest post condition principle/.
+
+    https://en.wikipedia.org/wiki/Predicate_transformer_semantics#Strongest_postcondition
+
+    /Strongest postcondition/ means if you go /forward/ in the program
+    from this precondition, with this instruction I can be sure to end
+    up in this postcondition.
+
+    /Weakest precondition/ is going /backward/ in the sequence of the program.
+    From this postcondition, if we applied this instruction *c*, I can assume
+    this properties where true before applying this *c*.
+
+    The advantage of the /forward/ approach is that it is very close
+    to symbolic execution, with things such as assignment.
+    
+** Coq                                                                  :coq:
+
+*** Is there a way to force Coq to treat names as constructors       :errors:
+
+   This question is asking if there is a mechanism in Coq for treating
+   constructors differently, similar to in Haskell. In Haskell you are
+   forced to use capital letters at the beginning of every
+   constructor's identifier. This makes it so when pattern matching
+   the compiler can easily distinguish between what looks like a
+   constructor, and what should be a variable (everything that starts
+   with a lower case letter). This can be useful for avoiding mistakes
+   where you think you're matching on a specific constructor, say ~C~,
+   but are instead matching on all constructors and assigning it to a
+   variable ~c~.
+
+   Coq has no mechanism for making these distinctions, but you will
+   often get error messages like...
+
+   #+BEGIN_EXAMPLE
+   Error: This clause is redundant.
+   #+END_EXAMPLE
+
+   Since the variable match could be redundant.
+
+*** ~nat~ and large numbers                                          :errors:
+
+   Large natural numbers may cause segfaults, since they can't fit in
+   memory. The unary representation is really inefficient. In
+   real-world Coq developments you may want to use more efficient
+   representations, like ~Z~ instead.
+
+*** Set vs. Type                                                     :theory:
+
+   ~Set~ is smaller than ~Type~, since ~Set : Type~.
+
+   Put non-propositional things (things you want to extract) in ~Set~
+   where possible.
+
+   (why? Ask Johnw)
+
+   - http://adam.chlipala.net/cpdt/html/Cpdt.Universes.html
+   - https://sympa.inria.fr/sympa/arc/coq-club/2010-04/msg00092.html
+   - https://people.cs.kuleuven.be/~bart.jacobs/coq-essence.pdf
+
+*** ~Variable~ and ~Generalizable Variable~                     :typeclasses:
+
+    ~Generalizable Variables~ has nothing to do with ~Variable~.
+
+
+    ~Generalizable Variables~ says "allow the following variables to
+    be automatically introduced by ~`{...}~".
+
+    ~Variable~ introduces a new axiom with the given name into the
+    scope that will be added as a parameter at the end of a section.
+
+*** Real Numbers in Coq                                  :reals:numbers:
+
+    For real analysis in Coq there are a few libraries:
+
+    - Computational, CoRN: https://github.com/c-corn/corn 
+    - Fast real computationns in coq: http://coq-interval.gforge.inria.fr/
+    - Friendly real number library: http://coquelicot.saclay.inria.fr/
+
+*** ~{| ... |}~ vs ~{ ... }~                                    :typeclasses:
+
+    These both introduce dependent records, and should be the same.
+
+*** ~debug auto~                                               :tactics:auto:
+
+    Using ~debug auto~ will show you what auto is doing.
+
+*** Prop vs. bool                                                    :theory:
+
+    Some people prefer the use of ~bool~ for decidable propositions
+    over ~Prop~, since if it's decidable you can have a boolean
+    function which automatically decides the proposition. This is
+    better for manipulating the proposition, excluded middle is
+    immediate, and you can program with it "natively".  ~Prop~ and
+    bool.
+
+    You should also be able to convert to Prop if necessary.
+
+*** ~cbn~                                                           :tactics:
+
+    "call by name"
+
+    https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacn.cbn
+
+    Meant to be a more predictable replacement for ~simpl~.
+
+*** ~cbv~                                                           :tactics:
+
+    "call by value"
+
+    https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacn.cbv
+
+*** ~dependent induction~                                 :tactics:induction:
+
+    https://coq.inria.fr/distrib/current/refman/proof-engine/detailed-tactic-examples.html#dependent-induction
+
+    You often need ~dependent induction~ when a type dependent on a
+    term you’ve destructed. It will induce a dependency on the axiom
+    ~JMeq~, which can in most cases be avoided (though sometimes with
+    considerable effort).
+
+    This comes up a lot if you use types like ~vector~.
+
+    ~dependent induction~ does not always have to add the ~JMeq~
+    axiom, but it often does.
+
+*** Search                                                           :search:
+
+    Can search for notations by putting double quotes around the
+    notation. This can be unexpected when notations are used to
+    essentially just rename functions. E.g.,
+
+    #+BEGIN_SRC coq
+      Notation open e1 e2     := (open_exp_wrt_exp e1 e2).
+    #+END_SRC
+
+    More info on search:
+
+    https://quanttype.net/posts/2016-04-19-finding-that-lemma.html
+
+    Can be very helpful to search for conversions between data types, like so:
+
+    #+BEGIN_SRC coq
+      Search (nat -> Z).
+    #+END_SRC
+
+    This snippet will find functions which convert between `nat` and `Z`.
+
+*** Modules                                                         :modules:
+
+    Best to check out the tutorial, and reference manual here:
+
+    - https://github.com/coq/coq/wiki/ModuleSystemTutorial
+    - https://coq.inria.fr/refman/language/gallina-extensions.html#module-system
+    
+**** Module Types                                                   :modules:
+
+     A module type is the list of ~Parameter~'s an ~Axiom~'s
+
+     Module types are kind of like an interface, specifying what you
+     need to make something of that module type.
+
+
+**** Module Functors                                               :modules:functors:
+
+     Module functors (which are different from the Haskell notion of
+     functors!)  are modules that take module types as arguments. This is
+     useful because the module functor can define proofs that depend on the
+     interface specified by the module type, so the proofs don't need to be
+     repeated.
+
+     E.g., you can have a ~Module Type~ for ~Ord~ which specifies the
+     less than or equal to operation. Instances of ~Ord~ could be
+     natural numbers with the standard numerical less than or equal to
+     operator, or something like strings with a lexicographical less
+     than or equal to operator.
+
+     These instance of ~Ord~ could then be passed to a Module functor
+     ~Min~ which defines a function ~min~ between two elements, and
+     some theorems on ~min~ with proofs. The definition of ~min~ and
+     proofs of its theorems need only be specified once, and the
+     module functor can be instantiated for any ~Ord~ module.
+
+***** Example usage
+
+      Say I have a module type:
+
+      #+BEGIN_SRC coq
+        Module Type Equiv.
+          Parameter t  : Type.
+          Parameter eq : t -> t -> Prop.
+          Axiom eq_refl  : forall x, eq x x.
+          Axiom eq_sym   : forall x y, eq x y -> eq y x.
+          Axiom eq_trans : forall x y z, eq x y -> eq y z -> eq x z.
+        End Equiv.
+      #+END_SRC
+
+      If you would like to have a second signature that depends upon
+      this one, then you can use functors. E.g.,
+
+      #+BEGIN_SRC coq
+        Module Type Poset (EQ : Equiv) <: Equiv.
+          Include EQ.
+  
+          Parameter order : EQ.t -> EQ.t -> Prop.
+          Axiom order_refl    : forall x y, EQ.eq x y -> order x y.
+          Axiom order_antisym : forall x y, order x y -> order y x -> EQ.eq x y.
+          Axiom order_trans   : forall x y z, order x y -> order y z -> order x z.
+        End Poset.
+      #+END_SRC
+
+**** Module parameters / instantiation                              :modules:
+
+     What if you want to define a function which only depends on the
+     interface of a ~Module Type~, and does not need the actual
+     instantiation? E.g.,
+
+     #+BEGIN_SRC coq
+       Module Type Boo.
+         Parameter t: Type.
+         Parameter eqb: t -> t -> bool.
+         Definition eq (a0 a1: t): Prop := if (eqb a0 a1) then True else False.
+       End Boo.
+     #+END_SRC
+
+     We don't want to have to define ~eq~ in each instantiation of the
+     ~Module Type~, but Coq will force us to do this:
+
+     #+BEGIN_SRC coq
+       Module BooNat <: Boo.
+         Definition t := nat.
+         Definition eqb := Nat.eqb.
+         Definition eq (a0 a1: t): Prop := if (eqb a0 a1) then True else False. (* <----------- Why :(? *)
+       End BooNat.
+
+       Module BooZ <: Boo.
+         Definition t := Z.
+         Definition eqb := Z.eqb.
+         Definition eq (a0 a1: t): Prop := if (eqb a0 a1) then True else False. (* <----------- Why :(? *)
+       End BooZ.
+     #+END_SRC
+
+     To get rid of this boilerplate you can define a module that
+     depends on this module type; people who want to use your
+     module+module type will still need an instantiation of the
+     ~Module Type~.  For example, the ~FMap~ library requires you to
+     not only import their module, but also provide an instantiation
+     of the ~DecidableTypeEx~ module type.
+
+**** Module Advantages / Disadvantages                         :modules:
+
+***** Advantages
+
+     - "One advantage to modules over type classes is that you never
+       have to repeat typeclass parameters.  Even though you can
+       ameliorate that with a Section, it doesn’t help when you need
+       to open a different section in another file, but other than
+       that, I prefer type classes in nearly every way"
+
+***** Disadvantages
+
+     - This paper https://www.cs.cmu.edu/~amoertbe/papers/refinements.pdf argues against the use of modules in Coq
+     - The "diamond problem"
+       + "typeclasses allows me to use @ to override a descendent type
+         at a particular use location, whereas with modules I would
+         have to instantiate a whole other set of definitions for each
+         variation"
+       + for example of what the diamond problem even worse than
+         normal is that due to generativity, if B depends on A and C
+         depends on A, and then make a D that depends on B and C,
+         you’ll often get errors about A.foo != A.foo, not realized
+         that B.A.foo and C.A.foo have been generated as different
+         definitions
+       + whereas with typeclasses where you have defined members
+         rather than typeclasses, you just have an equality witness
+         that must be provided, but it’s fairly clear from the context
+         (after turning on implicits) why the disconnect is happening
+     - Example of some problems: https://gist.github.com/11bf3953995fe37a90f2c4caaeed5d62 
+
+     Generally speaking people seem to prefer typeclasses over modules.
+
+*** Typeclasses                                                 :typeclasses:
+
+    Typeclasses in Coq are similar to typeclasses in Haskell. Here are
+    some resources for typeclasses:
+
+    - https://coq.inria.fr/refman/addendum/type-classes.html
+      + Official manual pages on typeclasses
+    - https://softwarefoundations.cis.upenn.edu/draft/qc-current/Typeclasses.html
+      + Good tutorial on typeclasses in Coq, with more references at the end
+
+*** Module / Typeclass Comparisons                 :typeclasses:modules:
+
+    - Typeclasses allow for ad-hoc polymorphism, modules do not.
+      + operator overloading
+    - https://stackoverflow.com/questions/36927169/ml-modules-vs-haskell-type-classes
+
+**** "The holy grail"
+
+     Supposedly this paper describes the "holy grail" between modules
+     and typeclasses. Might be worth a read if you're trying to figure
+     out the pros and cons of each.
+
+     https://www.cl.cam.ac.uk/~jdy22/papers/modular-implicits.pdf
+
+*** Sections                                                       :sections:
+
+    https://coq.inria.fr/refman/language/gallina-extensions.html#section-mechanism
+
+**** Hypothesis / Variable                                         :sections:
+
+     Hypothesis lets you provide a proposition, without providing a
+     proof in a section. This hypothesis then becomes an argument to
+     every function / definition that uses it within the section.
+
+     Variable works the same way.
+
+     #+BEGIN_SRC coq
+       Section S.
+         Variable n : nat.
+         Definition square : nat := n * n.
+         Check square.
+         (* square : nat *)
+       End S.
+       Check square.
+       (* square : nat -> nat *)
+     #+END_SRC
+
+*** Hint Ordering / Priority                                :auto:hints:
+
+    Can you order things in a hint database? You could do this
+    manually by stratifying hints into different databases, which you
+    then order in a tactic...
+
+    A better solution might be to add hint priority values using ~Hint Extern~
+
+    https://coq.inria.fr/refman/proof-engine/tactics.html#creating-hint-databases
+    
+*** Reordering subgoals                                               :goals:
+
+    Sometimes you want to work on goals in a different order than Coq.
+
+    - ~Focus 2~ would focus the second sub-goal.
+    - You can ~admit~ a subgoal, and then when you're done the rest of
+      the proof go back and replace the ~admit~ with a proof.
+    - ssreflect has some combinators for this, you can write ~last
+      first~ to handle the last goal first.
+    - ~all:swap 1 2~ will swap the position of sub-goals 1 and2
+    - If they're sufficiently trivial, you can do ~generate_subgoals; [on_first | on_second | | on_fourth]~
+    - ~all:revgoals~ to reverse the order of goals.
+
+    It can be best to avoid reordering, however, as it can make proofs
+    more fragile.
+
+    A lot of reordering tactics are documented here:
+
+    https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#non-logical-tactics
+
+*** ~Unshelve~, ~unshelve <tactic>~                         :tacticals:eauto:
+
+    ~unshelve eapply~ will work a little harder to introduce evars.
+
+    Generated goals, typically to resolve evars, are put on "the
+    shelf" and are not visible at first.
+
+    ~Unshelve~ puts all shelved goals into a visible state, and
+    ~unshelve <tactic>~ will do this for only the shelved goals
+    created by ~<tactic>~
+
+    https://github.com/ProofGeneral/PG/issues/30#issuecomment-173974922
+
+*** Evar unshelving                                                   :eauto:
+
+    Using ~eauto, you end up with ~evars~ that are shelved. You can
+    use ~unshelve econstructor.~ before your tactic to get evar goals
+    first.
+
+*** Destruct notations                                             :notation:
+
+    You can do destruct on notations like this:
+
+    #+BEGIN_SRC coq
+      destruct "[=]".
+    #+END_SRC
+
+*** ~pattern term~                                                  :tactics:
+
+    https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacn.pattern
+
+    ~pattern x~ will abstract all occurrences of ~x~, so for instance
+    it will change ~x + 1~ into ~(fun v => v + 1) x~. This can be
+    useful for some automation and applications, which are expecting
+    function applications.
+
+*** Custom induction principles                              :induction:
+
+    https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacn.induction
+    
+    You may define custom induction principles in Coq and use them
+    with the induction tactic via:
+
+    #+BEGIN_SRC coq
+      induction Blah using my_custom_ind
+    #+END_SRC
+
+    An example of a different induction principle is the one defined
+    in Coq's list library for performing induction over lists in
+    reverse order:
+
+    #+BEGIN_SRC coq
+      Theorem rev_ind :
+        forall P:list A -> Prop,
+          P [] ->
+          (forall (x:A) (l:list A), P l -> P (l ++ [x])) -> forall l:list A, P l.
+    #+END_SRC
+
+    A question brought up in the summer school was how to use a custom
+    induction principle with additional premises on the induction
+    variable. E.g.,
+
+    #+BEGIN_SRC coq
+      my_custom_ind :
+        forall m P,
+          P m ->
+          (forall n, P (S n) -> P n) ->
+          forall n, n <= m -> P n
+    #+END_SRC
+
+    The additional premise being ~n <= m~. One solution is to ~apply~
+    the induction premise directly (with ~apply~), rather than using ~induction~.
+
+    You may also need to use ~pattern x~ so that ~apply~ can infer ~P~
+    easily.
+
+*** Destructing multiple existential variables   :destruct:existentials:
+
+    If you have multiple existentially qualified variables in a hypothesis, like:
+
+    #+BEGIN_SRC coq
+      H : exists x y, P x y
+    #+END_SRC
+
+    Then you can ~destruct~ all of them like:
+
+    #+BEGIN_SRC coq
+      destruct H as [x [y H]].
+    #+END_SRC
+
+    You could also use Ltac, like the following:
+
+    #+BEGIN_SRC coq
+      Ltac destruct_ex := repeat match goal with
+                                 | [ H : exists _, _ |- _ ] => destruct H
+                                 end.
+    #+END_SRC
+
+    This works because ~exists x y, z~ is really ~exists x, exists y, z~.
+
+    Another alternative is something like:
+
+    #+BEGIN_SRC coq
+      repeat destruct H as [? H]
+    #+END_SRC
+
+    Where ~?~ is used to generate fresh names.
+
+*** Ltac naming                                                        :ltac:
+
+    In Ltac you can give something an automatically generated fresh
+    name with ~?~ in an "intros list". An example of this is:
+    
+    #+BEGIN_SRC coq
+      destruct H as [? Hblah]
+    #+END_SRC
+
+    Using ~?~ in this way is similar to using ~fresh~ to generate a
+    new name, like so:
+
+    #+BEGIN_SRC coq
+      let H' := fresh "H" in destruct H as [H' Hblah]
+    #+END_SRC
+
+    ~?~ may try to be smart about naming, like giving names starting with ~n~ to ~nat~ types.
+
+    - ~?~: https://coq.inria.fr/refman/proof-engine/tactics.html#coq:tacn.intros
+    - ~fresh~: https://coq.inria.fr/refman/proof-engine/ltac.htm#generating-fresh-hypothesis-names
+
+    
+*** Program environment       :instance:program_instance:program_environment:
+
+    https://coq.inria.fr/refman/addendum/program.html
+
+    You may encounter ~Program Instance~ instead of ~Instance~,
+    ~Program Fixpoint~ instead of ~Fixpoint~, and so on.
+
+    The ~Program~ environment just offers a bit more magic. ~Program~
+    will infer a lot more, and will auto-solve goals. When writing
+    functional programs in this environment, you can leave holes that
+    can either be solved automatically, or filled in later. Any goals
+    that remain can be solved with ~Next Obligation~.
+
+    You can change which tactic is used to auto-solve goals with
+
+    #+BEGIN_SRC coq
+      Local Obligation Tactic := ...
+    #+END_SRC
+
+    Which can be very handy.
+
+*** Defined vs Qed                                              :qed:defined:
+
+    - https://gmalecha.github.io/reflections/2017/qed-considered-harmful
+
+*** Decidable equality and conditionals                         :dec_eq:
+
+    #+BEGIN_SRC coq
+    eq_dec : forall x y : atom, {x = y} + {x <> y}
+    #+END_SRC
+
+    And ~==~ is notation for ~eq_dec a b~.
+
+    Now suppose you end up with a goal like:
+
+    #+BEGIN_SRC coq
+      u = (if x == x then u else blah)
+    #+END_SRC
+
+    Since ~x == x~ is just notation for ~eq_dec x x~, you can do
+
+    #+BEGIN_SRC coq
+      destruct (x == x)
+    #+END_SRC
+
+    which will split the goal into two, one with the hypothesis ~x = x~, and the other with the hypothesis ~x <> x~.
+
+    In the first case, where ~x = x~ the goal should be solvable (~auto~ should be
+    sufficient in this specific instance).
+
+    The second case, where ~x <> x~, is solvable by ~contradiction~.
+
+    Using ~destruct (_ == _)~ can be a bit annoying, since you end up
+    splitting the goal, only to dismiss one with ~contradiction~, so
+    it may be more convenient to rewrite using a theorem like the
+    following:
+
+    #+BEGIN_SRC coq
+      Theorem eq_dec_refl {A : Type} `{EqDec_eq A} (x : A) : eq_dec x x = left eq_refl.
+      Proof.
+        destruct (eq_dec x x); [|contradiction].
+        f_equal; apply (Eqdep_dec.UIP_dec eq_dec).
+      Qed.
+    #+END_SRC
+
+    https://github.com/plclub/metalib/pull/10/files
+
+    (~left~ is the first constructor of the ~sumbool~ type, so it is the equivalent of "true" for the if expression)
+
+*** UIP_Dec                                                          :dec_eq:
+
+    ~EqDep_dec.UIP_dec~ can be handy for avoiding the ~JMeq_eq~ axiom when you have decidability.
+
+*** Generators                                                   :quickchick:
+
+    For quickchick generators it should be possible to write
+    generators for dependent products, like for instance you could
+    generate sorted lists, and then use the fact that ~sort~ produces
+    evidence for ~sorted~
+
+*** Minifier                                                          :tools:
+
+    Jason Gross has a “minifier” for Coq programs that reveal bugs in
+    the compiler, in order to produce better bug reports for the Coq
+    team:
+    
+    https://github.com/JasonGross/coq-tools/blob/master/find-bug.py .
+
+    It’s quite easy to use, provided you can reduce any external
+    dependencies.
+
+*** Sigma types                                          :sigma:existentials:
+
+    You might run into a bunch of stuff with ~sig~ in it. This is
+    usually short for ~sigma~. Sigma types are dependent sum types,
+    and are used for existential quantifiers.
+
+    So, things like ~proj2_sig~ are to get the second member of a propositional ~sigma~.
+
+    #+BEGIN_SRC coq
+      forall x : { a : T | P T }, (proj2_sig x : P (proj1_sig x))
+    #+END_SRC
+
+    ~proj1_sig~ gets the value, and ~proj2_sig~ gets you the witness
+    to the proposition.
+
+    ~sigT~ is the same as ~sig~, but it uses ~Type~ instead of ~Prop~
+
+*** ~..~ problems in PG                                                :bugs:
+
+    On old versions of ProofGeneral accidentally typing ~..~ after a
+    tactic, and trying to run it would cause ProofGeneral to get
+    stuck. This seems to have been fixed in recent versions.
+
+    Steps to fix proof-general when it gets stuck:
+
+    - ~C-c C-c~: ~proof-interrupt-process~.
+    - ~C-c C-u~: ~proof-undo-last-successful-command~.
+    - ~C-c C-x~: ~proof-shell-exit~, follow this with ~C-c <C-return>~ to get back to the original point.
+    - Open a shell and kill ~coqtop~.
+
+*** Replacing with A:=B                                            :set:
+
+    Suppose using ~set~ you end up with ~A := B~ in the context, and you want to rewrite using this.
+
+    - ~unfold A~, ~subst A~, or ~replace A with B by reflexivity~ should rewrite ~A~ with ~B~ in the goal.
+    - ~fold A~ should rewrite ~B~ with ~A~ in the goal.
+
+*** Coqtop                                                             :bugs:
+
+    Coqtop is a little annoying to use because it doesn't support
+    editing a line as you're writing it. The alternative is to use
+    something like [[https://github.com/hanslub42/rlwrap][rlwrap]]. Apparently some versions of rlwrap have
+    bugs which make them unusable with Coqtop. A usable alternative is
+    [[https://opam.ocaml.org/packages/ledit/][ledit]].
+
+
+*** In Depth Semicolons
+
+    The impression is that the semicolon operator, ~bar; foo~, will
+    run ~foo~ on all goals created by ~bar~.
+
+    ~gfail~ fails even when there are no goals, so ~foo; gfail~ will
+    actually fail, even if ~foo~ solves all goals, whereas ~foo; fail~
+    will succeeds.
+
+    Running tactics after a semicolon when there are no remaining
+    goals makes a lot of sense, though. It's reasonable to want to
+    print after running a tactic, for instance ~admit; idtac "hello!"~
+
+*** ~invertn~                                          :tactics:plugins:ltac:
+
+    This came up in Adam Chlipala's lectures, and was solved with
+    multiple Ltac definitions:
+
+    #+BEGIN_SRC coq
+      Ltac invert  H := inversion H; clear H; subst. 
+      Ltac invert0 H := invert H; fail. 
+      Ltac invert1 H := invert0 H || (invert H; [ ]). 
+      Ltac invert2 H := invert1 H || (invert H; [ | ]). 
+      Ltac invert3 H := invert2 H || (invert H; [ | | ]).
+      Ltac invert4 H := invert2 H || (invert H; [ | | | ]).
+    #+END_SRC
+
+    The goal is to use ~inversion~ on a hypothesis only if it will
+    create less than or equal to ~n~ subgoals.
+
+    Somebody wrote a Coq plugin to do this:
+
+    https://github.com/lemonidas/invertn_tactic
+
+    And eventually an Ltac solution emerged as well, which went
+    through a number of iterations:
+
+    #+BEGIN_SRC coq
+      Ltac invert_internal n H :=
+        lazymatch n with
+        | 0 => inversion H; clear H; subst
+        | S ?n' => invert_internal n' H; let g := numgoals in guard g < n
+        end.
+      Tactic Notation "invert" integer(n) constr(H) := invert_internal n H.
+    #+END_SRC
+
+    Which was then shortened to:
+
+    #+BEGIN_SRC coq
+      Ltac invert_internal n H :=
+        inversion H; subst; clear H;
+        let g := numgoals
+        in guard g <= n.
+    #+END_SRC
+
+    It was then suggested that for efficiency the ~subst~ and ~clear~
+    tactics should be moved to after the ~guard~, since there's no
+    need to run these tactics if the ~guard~ fails:
+
+    #+BEGIN_SRC coq
+      Tactic Notation "invert" integer(n) constr(H) :=
+        inversion H; let g := numgoals in guard g <= n; clear H; subst.
+    #+END_SRC
+
+*** Inversion subst warning                     :ltac:tactics:best_practices:
+
+    ~inversion H; subst; clear H~ is a common pattern, but sometimes
+    does not lead to nice results since the ~subst~ can cause large
+    substitutions, leading to a really complicated context. Another
+    issue is that this can rewrite hypothesis that you want to keep in
+    tact.
+
+*** Ltac bug fixing                                                    :ltac:
+
+    Adam Chlipala points out:
+
+    #+BEGIN_QUOTE
+    Let me just point out that "fixing bugs in the Ltac semantics"
+    often forces significant amounts of code to be rewritten after
+    extensive debugging.
+    #+END_QUOTE
+
+*** Redefining Ltac                                                    :ltac:
+
+    ~::=~ can be used to redefine existing Ltac definitions.
+
+*** Cut                                                             :tactics:
+
+    - for whoever was asking earlier today about "cut" in ltac: there
+      appears to be a ~hint~ form that automatically does a cut in the
+      prolog sense of pruning the search tree. it uses (hold on to
+      your hat) a /regular expression over the path of
+      hint-identifiers/ in the tree, to decide where to cut. it also
+      only works currently in the typeclass proof search, not general
+      proof search. but maybe they'll extend it someday.
+    - oh wait I misunderstood; typeclass eauto is maybe
+      generally-applicable?
+    - yeah, it looks like ~typeclasses eauto with core~ will run the
+      new proof engine on the core auto database, making it usable in
+      contexts where you'd normally use auto. and then you can, yeah
+      (guh) prune the tree with ~Hint Cut <regexp>~.
+
+*** Refine vs Exact                                                 :tactics:
+
+    There are two similar tactics built into Coq, ~refine~ and
+    ~exact~. Both let the user supply a Gallina term which can satisfy
+    a goal (if the term has a type that matches).
+
+    ~exact~ has to give a term which is complete and exactly matches
+    the goal.
+
+    With ~refine~ the user can put holes in places which create
+    subgoals. For instance you could destruct something like:
+
+    #+BEGIN_SRC coq
+      refine (match something with
+              | false => _
+              | true => _
+              end).
+    #+END_SRC
+
+    Which would give you a subgoal for each branch.
+    
+*** Congruence                                                       :tactic:
+
+    https://coq.inria.fr/distrib/current/refman/proof-engine/tactics.html#coq:tacn.congruence
+
+    Congruence can usually solve goals where you only have to do rewriting.
+
+*** ~||~ and ~+~                                             :ltac:tacticals:
+
+    ~||~ and ~+~ are somewhat similar ways of combining tactics.
+
+    ~t1 || t2~ runs ~t2~ if ~t1~ "doesn't do anything", which means
+    that it does not change the proof state. So, for example ~auto ||
+    fail "auto failed"~ would fail iff ~auto~ did not do anything.
+
+    ~fail || t ≡ t~ and ~intros X || t ≡ intros X~ as you might
+    expect, but ~idtac || t ≡ t~
+
+    ~fail + t ≡ t~ and ~intros X + t ≡ intros X~, as well as ~idtac +
+    t ≡ idtac~.
+
+    ~first [t1 | t2 | … | tN]~ is like ~t1 + t2 + … + tN~, except for
+    a minor detail with failure levels
+
+*** Progress                                                        :tactics:
+
+    To know what it means for a tactic to make progress, it might be
+    illustrative to look at the progress tactic:
+
+    https://coq.inria.fr/distrib/current/refman/proof-engine/ltac.html#coq:tacn.progress
+
+*** Extraction                                                   :extraction:
+
+    Coq extraction takes Gallina to a languaged called mini-ml, which
+    is then further transformed to other languages.
+    
+    Main bit of the ocaml extraction (this isn't including support code for number representations and such):
+
+    https://github.com/coq/coq/blob/master/plugins/extraction/ocaml.ml 
+
+*** Undocumented tactics as of 8.5                    :tactics:documentation:
+
+    - ~autoapply~
+    - ~autounfold_one~
+    - ~debug auto~
+    - ~debug eauto~
+    - ~debug trivial~
+    - ~dependent generalize_eqs~
+    - ~dependent generalize_eqs_vars~
+    - ~destauto~
+    - ~destruct_with_eqn~
+    - ~dfs eauto~
+    - ~generalize_eqs~
+    - ~generalize_eqs_vars~
+    - ~gintuition~
+    - ~goal~
+    - ~guard~
+    - ~head_of_constr~
+    - ~hget_evar~
+    - ~hresolve_core~
+    - ~info~
+    - ~info_auto~
+    - ~info_eauto~
+    - ~infoH~
+    - ~info_trivial~
+    - ~new auto~
+    - ~now~
+    - ~progress_evars~
+    - ~prolog~
+    - ~rec~
+    - ~rewrite_all~
+    - ~rewrite_db~
+    - ~setoid_etransitivity~
+    - ~simple subst~
+    - ~soft functional induction~
+    - ~specialize_eqs~
+    - ~substitute~
+    - ~unshelve~
+    - ~etransitivity~
+    - ~zify~
+    
+*** Is there a way to turn off notations when printing?       :notations:
+
+    Sometimes notations can be confusing and get in the way, if you
+    want to disable notations when Coq is printing out information you
+    can try:
+
+    #+BEGIN_SRC coq
+      Unset Printing Notations.
+    #+END_SRC
+
+    So, for instance:
+
+    #+BEGIN_SRC coq
+      Unset Printing Notations.
+
+      Theorem foo :
+        forall (a b : nat),
+          a <= b -> a < b.
+    #+END_SRC
+
+    will print the goal as:
+
+    #+BEGIN_SRC coq
+      forall (a b : nat) (_ : le a b), lt a b
+    #+END_SRC
+
+    instead of:
+
+    #+BEGIN_SRC coq
+      forall a b : nat, a <= b -> a < b
+    #+END_SRC
+
+*** Functional induction                                  :tactics:induction:
+
+    https://coq.inria.fr/refman/user-extensions/proof-schemes.html
+
+    And in particular:
+
+    https://coq.inria.fr/refman/user-extensions/proof-schemes.html#generation-of-induction-principles-with-functional-scheme
+
+    Coq can auto-generate induction principles following the "shape" of a function.
+
+    This came up in context of this theorem for [[https://github.com/DeepSpec/dsss17/blob/4e2de0823f1164f00edbb346acb01304c1c53546/SF/vfa/Redblack.v#L153][Redblack tree insertion]], that inserting into a tree always gives you a non-empty tree, the proposed solution using ~functional induction~ was:
+
+    #+BEGIN_SRC coq
+      Functional Scheme ins_ind := Induction for ins Sort Prop.
+      Functional Scheme balance_ind := Induction for balance Sort Prop.
+
+      Lemma ins_not_E': forall x vx s, ins x vx s <> E.
+      Proof.
+        unfold not.
+        intros x vx s He.
+        functional induction (ins x vx s); eauto; try discriminate;
+          match goal with
+            H : balance ?a ?b ?c ?d ?e = _ |- _ ] =>
+                functional induction (balance a b c d e);
+                try discriminate; eauto
+          end.
+      Qed.
+    #+END_SRC
+
+    Not shorter than the automation from the lecture but it requires less thinking, arguably.
+
+*** match reverse                                                      :ltac:
+
+    ~match reverse goal with~ matches hypothesis in the reverse order
+    from a regular match.
+
+    #+BEGIN_SRC coq
+      Ltac test_ltac :=
+        match goal with
+        | H : _ |- _ => idtac H
+        end.
+
+      Ltac test_ltac_rev :=
+        match reverse goal with
+        | H : _ |- _ => idtac H
+        end.
+
+      Theorem foo :
+        forall (A B : Prop), True.
+      Proof.
+        intros A B.
+        test_ltac.
+        test_ltac_rev.
+      Qed.
+    #+END_SRC
+
+    This will print ~B~ when ~test_ltac~ is run, and ~A~ when
+    ~test_ltac_rev~ is run.
+
+*** Notations for repeated patterns (like lists)                   :notation:
+
+    https://coq.inria.fr/distrib/current/refman/user-extensions/syntax-extensions.html#notations-with-recursive-patterns
+
+    ~..~ in notations lets you define repeated patterns that get expanded.
+
+*** Proof with                                                      :tactics:
+
+    You can use ~Proof with <tactic>~ where ~<tactic>~ is replaced by
+    some tactic to make proofs a bit shorter.
+
+    ~Proof with t~ will cause ~t1...~ to behave like ~t1; t~
+    automatically. If you find yourself using ~t~ a lot in a proof,
+    using ~Proof with t~ can make things shorter.
+
+    Here's a small example:
+
+    #+BEGIN_SRC coq
+      Theorem easy_theorem:
+        forall A (a : A),
+          a = a.
+      Proof with auto.
+        intros A a...
+      Qed.
+    #+END_SRC
