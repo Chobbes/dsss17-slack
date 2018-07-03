@@ -1,4 +1,5 @@
 #+SETUPFILE: theme-bigblow.setup
+#+TITLE: DSSS17 Slack Notes
 
 * #coq
 
