@@ -10,7 +10,7 @@
 
   Special thanks to:
 
-  - John Wiegely: setting up a ZNC bouncer to grab logs from IRC
+  - John Wiegley: setting up a ZNC bouncer to grab logs from IRC
   - Perry Metzger: setting up the VPS for the bouncer
   - All of the DSSS17 participants for their great questions and answers
 
@@ -260,8 +260,6 @@
 
    Put non-propositional things (things you want to extract) in ~Set~
    where possible.
-
-   (why? Ask Johnw)
 
    - http://adam.chlipala.net/cpdt/html/Cpdt.Universes.html
    - https://sympa.inria.fr/sympa/arc/coq-club/2010-04/msg00092.html
